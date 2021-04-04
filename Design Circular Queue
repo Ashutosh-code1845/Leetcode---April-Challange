@@ -1,0 +1,59 @@
+class MyCircularQueue {
+public:
+    vector<int> q;
+    int head, tail, N;
+    bool empty;
+    
+    MyCircularQueue(int k) {
+        head = 0;
+        tail = 0;
+        N = k;
+        q = vector<int> (k);
+        empty = true;
+    }
+    
+    bool enQueue(int value) {
+        if (isFull()) return false;
+        empty = false;
+        q[tail] = value;
+        tail = (tail+1) % N;
+        return true;
+    }
+    
+    bool deQueue() {
+        if (isEmpty()) return false;
+        q[head] = 0;
+        head = (head+1) % N;
+        if (head == tail) empty = true;
+        return true;
+    }
+    
+    int Front() {
+        if (isEmpty()) return -1;
+        return q[head];
+    }
+    
+    int Rear() {
+         if (isEmpty()) return -1;
+        return q[(tail-1+N)%N];
+    }
+    
+    bool isEmpty() {
+        return empty;
+    }
+    
+    bool isFull() {
+        return (empty) ? false : head == tail;
+    }
+};
+
+/**
+ * Your MyCircularQueue object will be instantiated and called as such:
+ * MyCircularQueue* obj = new MyCircularQueue(k);
+ * bool param_1 = obj->enQueue(value);
+ * bool param_2 = obj->deQueue();
+ * int param_3 = obj->Front();
+ * int param_4 = obj->Rear();
+ * bool param_5 = obj->isEmpty();
+ * bool param_6 = obj->isFull();
+ */
