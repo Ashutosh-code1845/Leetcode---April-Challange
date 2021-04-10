@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int solve(vector<vector<int>>& matrix, int i, int j, int row, int col, vector<vector<int>> &dp, int prev_val)
+    {
+//         should not be out of boundary and previous element should not be greater than current element
+        if(i<0 || i>=row || j<0 || j>=col || prev_val>=matrix[i][j])
+            return 0;
+        
+        //already explored
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+            int right = solve(matrix,i,j+1,row,col,dp,matrix[i][j]);
+        
+            int down = solve(matrix,i+1,j,row,col,dp,matrix[i][j]);
+        
+            int up = solve(matrix,i-1,j,row,col,dp,matrix[i][j]);
+        
+            int left = solve(matrix,i,j-1,row,col,dp,matrix[i][j]);
+        
+        int one=max(right,left);
+        int two=max(up,down);
+        
+//         add one step
+        dp[i][j]=1+max(one,two);
+        
+        return dp[i][j];
+        
+    }
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        
+        if(matrix.size()==0)
+        return 0;
+        
+        int row=matrix.size();
+        int col=matrix[0].size();
+        int ans=0;
+        
+        vector<vector<int>> dp(row,vector<int>(col,-1));
+        for(int i=0;i<row;i++)
+        {
+            for(int j=0;j<col;j++)
+            {
+                ans=max(ans,solve(matrix,i,j,row,col,dp,INT_MIN));
+            }
+        }
+        return ans;
+    }
+};
