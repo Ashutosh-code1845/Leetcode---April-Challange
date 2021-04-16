@@ -1,0 +1,25 @@
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        if (s.empty()) return s;
+        stack<pair<char, int>> stk;
+        for (int i = 0; i < s.length(); i++) {
+            if (!stk.empty() && stk.top().first == s[i]) {
+                if (stk.top().second == k - 1) stk.pop();
+                else stk.top().second++;
+            } else {
+                stk.push(make_pair(s[i], 1));
+            }
+        }
+        s = "";
+        while (!stk.empty()) {
+            int count = stk.top().second;
+            while (count > 0) {
+                s = stk.top().first + s;
+                count--;
+            }
+            stk.pop();
+        }
+        return s;
+    }
+};
