@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int combinationSum4(vector<int>& nums, int target) {
+        
+        sort(nums.begin(), nums.end());
+        if(target == 0) return 1;
+        
+        vector<unsigned long> dp(target+1, 0);
+        int size_ = nums.size(), size;
+        
+        for(size = 0; size < size_; ++size) {
+            if(nums[size] <= target) ++dp[nums[size]];
+            else break;
+        }
+
+        for(int i = 1; i <= target; ++i) {
+            for(int j = 0; j < size; ++j) {
+                if(i >= nums[j]) dp[i] += dp[i - nums[j]];
+                else break;
+            }
+        }
+        
+        return dp[target];
+    }
+};
