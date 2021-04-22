@@ -1,0 +1,20 @@
+// Now, to get the least number of intersections, we must draw a line starting at top from some wall index idx such that the number of brick edges at that index is maximum. 
+// This will ensure that we have least number of brick intersections.
+
+class Solution {
+public:
+    int leastBricks(vector<vector<int>>& wall) {
+	int rows = size(wall), maxBrickEdges = 0, idx;
+	unordered_map<int, int> edgesFrequency; // will map index to count of brick edges at that index
+	for(auto& row : wall) {
+		// idx: denotes index of wall. We add each brick-width of row to find the next index having brick edge
+		idx = 0; 
+		for(int i = 0; i < size(row) - 1; i++) // ignore last brick, since we don't want to count wall edge index
+		    idx += row[i], edgesFrequency[idx]++;
+    }
+	// Lastly find the maximum number of brickEdges found at any index
+	for(auto& pair : edgesFrequency) maxBrickEdges = max(maxBrickEdges, pair.second);
+	// Rest of the bricks(excluding maxBrickEdges) would be intersected which is the minimum answer
+	return rows - maxBrickEdges;
+    }
+};
