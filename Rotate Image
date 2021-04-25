@@ -1,0 +1,36 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& m) {
+        
+        int r=m.size();
+        int c=m[0].size();
+//         matrix is n X n therefore r=c 
+        
+        for(int i=0; i<r; i++)
+        {
+            for(int j=i; j<c; j++)
+            {
+                int temp=m[i][j];
+                m[i][j]=m[j][i];
+                m[j][i]=temp;
+            }
+        }
+//         now swapping columbs
+        for(int i=0; i<r; i++)
+        {
+            int left=0;
+            int right=c-1;
+            
+            while(left<right)
+            {
+                int temp=m[i][left];
+                m[i][left]=m[i][right];
+                m[i][right]=temp;
+                
+                left++;
+                right--;
+            }
+        }
+        
+    }
+};
