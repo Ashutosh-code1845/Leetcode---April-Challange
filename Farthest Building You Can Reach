@@ -1,0 +1,94 @@
+//------------Dynamic Programming Approach (Memory Limit Exceeded)-------------------------
+class Solution {
+
+		public int dp[][][];
+		public int furthestBuilding(int[] heights, int bricks, int ladders) {
+
+			dp = new int[heights.length+1][bricks+1][ladders+1];
+
+			return maxHeight(0,bricks,ladders,heights);
+		}
+		public int maxHeight(int index, int bricks, int ladders, int[] heights)
+		{
+
+			if(index == heights.length-1)
+			{
+				return heights.length-1;
+			}
+
+			if(dp[index][bricks][ladders]!=0)
+				return dp[index][bricks][ladders];
+
+			if(heights[index] >= heights[index+1])
+			{
+				return maxHeight(index+1, bricks, ladders, heights);
+			}
+			else
+			{
+				int bricks_required = heights[index+1]-heights[index];
+
+				//System.out.println(bricks_required +" "+bricks);
+
+				if(bricks_required > bricks && ladders==0)
+				{
+					dp[index][bricks][ladders] = index;
+					return index;
+				}
+
+
+				int max_height_with_bricks = index;
+				int max_height_with_ladder = index;
+
+				if(bricks_required <= bricks)
+				{
+					max_height_with_bricks = maxHeight(index+1, bricks - bricks_required, ladders, heights );
+				}
+
+				if(ladders>=1)
+				{
+					max_height_with_ladder = maxHeight(index+1, bricks, ladders-1, heights);
+				}
+
+				dp[index][bricks][ladders] =Math.max(max_height_with_bricks,max_height_with_ladder);
+
+				return dp[index][bricks][ladders];
+
+
+			}
+		}
+
+
+	};
+
+
+
+//-------------------OPtimal Using Priority Queue----------------------
+
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        int sm=0,ans=heights.size()-1;
+        priority_queue<int,vector<int>,greater<int>>pq;
+        for(int i=0;i<heights.size()-1;i++)
+        {
+            if(heights[i+1]>heights[i])
+            {
+                pq.push(heights[i+1]-heights[i]);
+                if(pq.size()>ladders)
+                {
+                    sm+=pq.top();
+                    //pop out smallest value from priority queue
+                     pq.pop();
+                    if(sm>bricks) //it can't move further
+                    {
+                        ans=i;
+                        break;
+                    }
+                   
+                }
+                    
+            }
+        }
+        return ans;
+    }
+};
