@@ -1,0 +1,58 @@
+//-------------Method 1-------------
+
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+            if (n < 1) {
+            return false;
+        }
+
+        while (n % 3 == 0) {
+            n /= 3;
+        }
+
+        return n == 1;
+    }
+};
+
+//----------Method 2--------------
+
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+            switch(n) {
+            case 1:
+            case 3:
+            case 9:
+            case 27:
+            case 81:
+            case 243:
+            case 729:
+            case 2187:
+            case 6561:
+            case 19683:
+            case 59049:
+            case 177147:
+            case 531441:
+            case 1594323:
+            case 4782969:
+            case 14348907:
+            case 43046721:
+            case 129140163:
+            case 387420489:
+            case 1162261467:
+                return true;
+            default: return false;
+            }
+    }
+};
+
+//---------------MRthod 3---------------
+
+// Therefore, the possible values of n where we should return true are 3 to power1 to 3 to power 19 and its value 1162261467 and hence if it gives remainder zero  with n this means n is a divisor of this number and hence a power of three
+class Solution {
+public:
+    bool isPowerOfThree(int n) {
+      return n > 0 && 1162261467 % n == 0;
+    }
+};
