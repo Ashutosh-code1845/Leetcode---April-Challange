@@ -1,0 +1,66 @@
+//-----------Iterative-----------------
+class Solution {
+public:
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        int r=grid.size();
+        int c=grid[0].size();
+        
+        // if obstacle is in the very first cell then 0 paths to  reach end
+        if (grid[0][0] == 1) {
+            return 0;
+        }
+        
+        // Number of ways of reaching the starting cell = 1.
+        grid[0][0] = 1;
+        
+        //if current path is blocked then to reach till this point will be equal to that of reaching previous               block
+        for(int i=1; i<r; i++)
+            grid[i][0] = ( grid[i][0] == 0 && grid[i - 1][0] == 1) ? 1 : 0;
+        
+        //if current path is blocked then to reach till this point will be equal to that of reaching previous               block
+        for(int i=1; i<c; i++)
+            grid[0][i] = ( grid[0][i] == 0 && grid[0][i - 1] == 1) ? 1 : 0;
+        
+        for(int i=1; i<r; i++)
+        {
+            for(int j=1; j<c; j++)
+            {
+                if (grid[i][j] == 0)
+//                     sum of reaching previous points
+                    grid[i][j] = grid[i - 1][j] + grid[i][j - 1];
+                else
+                    grid[i][j]=0;
+            }
+        }
+         return grid[r - 1][c - 1];
+    }
+};
+
+//----------Memoized----------------------
+
+class Solution {
+public:
+    int solve(vector<vector<int>>& grid, vector<vector<int>>& dp, int i, int j)
+    {
+        if( i>=grid.size() || j>=grid[0].size() || grid[i][j]==1 )
+            return 0;
+        
+        //reached the last cell
+        if(i==grid.size()-1 && j==grid[0].size()-1) return 1;
+        
+        if(dp[i][j]!=-1) return dp[i][j];
+        
+        int right=solve(grid, dp ,i+1,j);
+        int down=solve(grid, dp ,i,j+1);
+        
+        dp[i][j]= down + right;
+        return dp[i][j];
+    }
+    int uniquePathsWithObstacles(vector<vector<int>>& grid) {
+        
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<int>> dp(m,vector<int>(n,-1));
+        return solve(grid, dp, 0,0);
+    }
+};
